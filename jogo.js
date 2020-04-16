@@ -85,6 +85,13 @@ const flappyBird = {
     altura: 24,
     x: 10,
     y: 50,
+    gravidade: 0.25,
+    velocidade: 0,
+
+    atualiza() {
+        flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
+        flappyBird.y = flappyBird.y + flappyBird.velocidade;
+    },
 
     desenha() {
         // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
@@ -99,16 +106,83 @@ const flappyBird = {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+
+// [MENSAGEM GET READY]
+const mensagemGetReady = {
+    spriteX: 134,
+    spriteY: 0,
+    largura: 174,
+    altura: 152,
+    x: (canvas.width / 2) - 174 / 2,
+    y: 50,
+
+    desenha() {
+        // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+        contexto.drawImage(
+            sprites,
+            mensagemGetReady.spriteX, mensagemGetReady.spriteY, // SpriteX(sx), SpriteY (sy)
+            mensagemGetReady.largura, mensagemGetReady.altura, // Tamanho do recorte da sprite (sWidth, sHeight,)
+            mensagemGetReady.x, mensagemGetReady.y, // (dx) (dy),
+            mensagemGetReady.largura, mensagemGetReady.altura, // dWidth, dHeight
+        );
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+//
+// [TELAS]
+//
+let telaAtiva = {};
+function mudaParaTela(novaTela) {
+    telaAtiva = novaTela;
+}
+
+const Telas = {
+    INICIO: {
+        desenha() {
+            chao.desenha();
+            planoDeFundo.desenha();
+            flappyBird.desenha();
+            mensagemGetReady.desenha();
+        },
+        click() {
+            mudaParaTela(Telas.JOGO);
+        },
+        atualiza() {
+
+        }
+    }
+};
+
+Telas.JOGO = {
+    desenha() {
+        chao.desenha();
+        planoDeFundo.desenha();
+        flappyBird.desenha();
+    },
+    atualiza() {
+        flappyBird.atualiza();
+    }
+};
+
 function loop() {
     // Chama a função para desenhar
-    chao.desenha();
-    planoDeFundo.desenha();
-    flappyBird.desenha();
+    telaAtiva.desenha();
+    telaAtiva.atualiza();
+
 
     // Função para otimizar a performance de animações
     requestAnimationFrame(loop);
 }
 
+window.addEventListener('click', function () {
+    if(telaAtiva.click){
+        telaAtiva.click()
+    };
+});
+
+mudaParaTela(Telas.INICIO);
 loop();
 
 
