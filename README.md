@@ -6,6 +6,8 @@
 ## 🔖 Descrição 
 Criação do jogo Flappy Bird utilizando JavaScript.
 
+Créditos: [Mario Souto](https://www.youtube.com/watch?v=jOAU81jdi-c&list=PLTcmLKdIkOWmeNferJ292VYKBXydGeDej)
+
 ## 💻 Tecnologias
 * JavaScript
 
